@@ -1,4 +1,4 @@
-package com.udr.Maps;
+package com.udr.maps_adventure;
 
 import java.util.HashMap;
 import java.util.Map;

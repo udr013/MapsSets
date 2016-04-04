@@ -1,13 +1,12 @@
-package com.udr.Maps;
+package com.udr.maps_adventure;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     private static Map<Integer, Location> locations = new HashMap<>();
 
     public static void main(String[] args) {
+
 	// write your code here
         Scanner scanner = new Scanner(System.in);
 
