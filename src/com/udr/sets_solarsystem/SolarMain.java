@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class SolarMain {
     private static Map<String, HeavenlyBody> solarSystem = new HashMap<>();
-    private static Set<Planet>planets = new HashSet<>();
+    private static Set<Planet> planets = new HashSet<>();
 
     public static void main(String[] args) {
         Planet mercury = new Planet("Mercury", 88);
@@ -58,11 +58,11 @@ public class SolarMain {
         solarSystem.put(ganymede.getName(), ganymede);
         jupiter.addSatellites(ganymede); // temp is still Jupiter
 
-        Moon callisto= new Moon("Callisto", 16.7);
+        Moon callisto = new Moon("Callisto", 16.7);
         solarSystem.put(callisto.getName(), callisto);
         jupiter.addSatellites(callisto); // temp is still Jupiter
 
-        Planet saturn= new Planet("Saturn", 10759);
+        Planet saturn = new Planet("Saturn", 10759);
         solarSystem.put(saturn.getName(), saturn);
         planets.add(saturn);
 
@@ -74,12 +74,14 @@ public class SolarMain {
         solarSystem.put(neptune.getName(), neptune);
         planets.add(neptune);
 
-        Planet pluto= new Planet("Pluto", 248);
+        Planet pluto = new Planet("Pluto", 248);
         solarSystem.put(pluto.getName(), pluto);
         planets.add(pluto);
 
         Star sun = new Star("Sun");
-        solarSystem.put(sun.getName(),sun);
+        Star sirius = new Star("Sirius");
+        solarSystem.put(sun.getName(), sun);
+        solarSystem.put(sirius.getName(), sirius);
         sun.setStarCompanions(mercury);
         sun.setStarCompanions(earth);
         sun.setStarCompanions(neptune);
@@ -92,42 +94,48 @@ public class SolarMain {
 
         Comet pluto2 = new Comet("Pluto", 80000);
         sun.setStarCompanions(pluto2);
-        solarSystem.put(pluto2.getName(),pluto2);
+        solarSystem.put(pluto2.getName(), pluto2);
+
 
         System.out.println("Star");
-        System.out.print(sun.getName()+": ");
-        for(HeavenlyBody x:sun.getStarCompanions()){
-            if(x instanceof Planet) {
-                System.out.print(x.getName() + ",");
-            }
+//        for (HeavenlyBody x : solarSystem.values()) {
+//            if (x instanceof Star) {
+//                System.out.print(x.getName() + "- ");
+//                for (HeavenlyBody p : ((Star)x).getStarCompanions()) {
+//                    if (p instanceof Planet) {
+//                        System.out.print("-Planet- "+x.getName() + ",");
+//                    }else if(x instanceof Comet) {
+//                        System.out.print("Comet: "+ x.getName() + ",");
+//                    }
+//                }
+//            }
+            System.out.println();
 
-        }
-        System.out.println();
-
-        System.out.print(sun.getName()+": ");
-        for(HeavenlyBody x:sun.getStarCompanions()){
-            if(x instanceof Comet) {
-                System.out.print(x.getName() + ",");
-            }
-
-        }
-
-
-        System.out.println("\nPlanets:");
-        for (HeavenlyBody planet : planets) {
-            System.out.println(planet.getName());
-        }
-
-        System.out.println("\nMoons:");
-        for (Planet planet : planets) {
-            if(planet.getSatellite().size()>0) {
-                System.out.print("\n" + planet.getName() + ": ");
-                for (Moon m : planet.getSatellite()) {
-                    System.out.print(m.getName() + ", ");
+            System.out.print(sun.getName() + ":\nComets: ");
+            for (HeavenlyBody c : sun.getStarCompanions()) {
+                if (c instanceof Comet) {
+                    System.out.print(c.getName() + ",");
                 }
+
             }
 
-        }System.out.println();
+
+            System.out.println("\nPlanets:");
+            for (HeavenlyBody planet : planets) {
+                System.out.println(planet.getName());
+            }
+
+            System.out.println("\nMoons:");
+            for (Planet planet : planets) {
+                if (planet.getSatellite().size() > 0) {
+                    System.out.print("\n" + planet.getName() + ": ");
+                    for (Moon m : planet.getSatellite()) {
+                        System.out.print(m.getName() + ", ");
+                    }
+                }
+
+            }
+            System.out.println();
 
 
 //        System.out.println("\nMoons of " + body.getName());
@@ -149,19 +157,18 @@ public class SolarMain {
 //        solarSystem.put(temp.getName(), temp);
 //        planets.add(temp);
 
-        //will print pluto twice as equals method is not overridden
-        System.out.println("\nPlanets:");
-        for (HeavenlyBody planet : planets) {
-            System.out.println(planet.getName()+ ":"+ planet.getOrbitalPeriod());
+            //will print pluto twice as equals method is not overridden
+            System.out.println("\nPlanets:");
+            for (HeavenlyBody planet : planets) {
+                System.out.println(planet.getName() + ":" + planet.getOrbitalPeriod());
+            }
+            System.out.println("\nall heavenlyBodies:");
+            for (HeavenlyBody h : solarSystem.values()) {
+                System.out.println(h.getClass() + ": " + h.getName());
+            }
         }
-        System.out.println("\nall heavenlyBodies:");
-       for(HeavenlyBody h:solarSystem.values()){
-           System.out.println(h.getClass()+": "+h.getName());
-       }
-}
-
-
 
 
     }
+
 
