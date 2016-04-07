@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Created by udr013 on 4-4-2016.
  */
-public final class HeavenlyBody {
+abstract class HeavenlyBody {
     private final String name;
     private final double orbitalPeriod;
     private final Set<HeavenlyBody> satellites;
@@ -29,17 +29,6 @@ public final class HeavenlyBody {
         return orbitalPeriod;
     }
 
-    public boolean addMoon(HeavenlyBody moon) {
-        return satellites.add(moon);
-
-    }
-
-    public Set<HeavenlyBody> getSatellites() {
-        return new HashSet<>(satellites);
-    }
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -58,7 +47,7 @@ public final class HeavenlyBody {
 
     @Override
     public int hashCode() {
-        System.out.println("hashcode called:"+ this.name + this.name.hashCode());
+        //System.out.println("hashcode called:"+ this.name + this.name.hashCode());
         return this.name.hashCode()+57;
         //return 0; the easy way out
     }
