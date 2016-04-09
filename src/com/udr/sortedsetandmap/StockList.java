@@ -1,8 +1,10 @@
 package com.udr.sortedsetandmap;
 
-import java.util.Collections;
+
+import java.util.Collections; //interface
 import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap; //actual class
+import java.util.Map; //interface
 
 /**
  * Created by udr013 on 8-4-2016.
@@ -10,8 +12,17 @@ import java.util.Map;
 public class StockList {
     private final Map<String, StockItem> list;
 
+    /**
+     * LinkedHashMap will iterate in the order in which the entries were put into the map .
+     *
+     * TreeMap will iterate according to the "natural ordering" of the keys
+     * according to their compareTo() method (or an externally supplied Comparator).
+     * Additionally, it implements the SortedMap interface, which
+     * contains methods that depend on this sort order.
+      */
     public StockList() {
-        this.list = new HashMap();
+        //this.list = new HashMap(); //items are unsorted
+        this.list = new LinkedHashMap<>();
 
     }
 
@@ -42,8 +53,11 @@ public class StockList {
         if ((inStock != null) && (inStock.quantityInStock() >= quantity) && (quantity != 0)) {
             inStock.adjustStock(-quantity);
             return quantity;
+        }else{
+            System.out.println("only "+ inStock.quantityInStock()+" "+inStock.getName()+ " left.. adjust your order!");
+            return 0;
         }
-        return 0; //to indicate nothing happend
+         //to indicate nothing happend
     }
 
     public StockItem get(String key) {
@@ -61,13 +75,21 @@ public class StockList {
      * The returned map will be serializable if the specified map
      * is serializable.
      *
-     * @param <K> the class of the map keys
-     * @param <V> the class of the map values
-     * @param  m the map for which an unmodifiable view is to be returned.
+     * @param \<K> the class of the map keys
+     * @param \<V> the class of the map values
+     * @param \ m the map for which an unmodifiable view is to be returned.
      * @return an unmodifiable view of the specified map.
      */
-    public Map<String, StockItem> getList() {
+    public Map<String, StockItem> getItemsList() {
         return Collections.unmodifiableMap(list);
+    }
+
+    public Map<String, Double> getPriceList() {
+        Map<String,Double> prices = new LinkedHashMap<>();
+        for(Map.Entry<String,StockItem> item : list.entrySet()){
+            prices.put(item.getKey(), item.getValue().getPrice());
+        }
+        return Collections.unmodifiableMap(prices);
     }
 
     @Override
@@ -80,10 +102,11 @@ public class StockList {
         for (Map.Entry<String, StockItem> item : list.entrySet()) {
             StockItem stockItem = item.getValue();
             double itemValue = stockItem.getPrice() * stockItem.quantityInStock();
-            s += stockItem + ". There are " + stockItem.quantityInStock() + " in stock. Value of items: " + itemValue + "\n";
+            s += stockItem + ". There are " + stockItem.quantityInStock() + " in stock. Value of items: "
+                    + String.format("%.2f",itemValue) + "\n";
             totalCost += itemValue;
         }
-        return s + "Total stock value: " + totalCost;
+        return s + "Total stock value: " + String.format("%.2f",totalCost);
     }
 }
 

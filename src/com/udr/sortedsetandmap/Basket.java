@@ -5,6 +5,7 @@ import sun.util.PreHashedMap;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by udr013 on 8-4-2016.
@@ -15,7 +16,8 @@ public class Basket {
 
     public Basket(String name) {
         this.name = name;
-        this.list = new HashMap<>();
+        //this.list = new HashMap<>(); unsorted list
+        this.list = new TreeMap<>();
     }
 
     public int addToBasket(StockItem item, int quantity){
@@ -33,12 +35,12 @@ public class Basket {
 
     @Override
     public String toString() {
-        String s ="\nShoppingBasket"+ name+" contains "+ list.size()+ " items \n";
+        String s ="\nShoppingBasket "+ name+" contains "+ list.size()+ " items \n";
         double totalCost =0.0;
         for(Map.Entry<StockItem,Integer> item: list.entrySet()){
-            s += item.getKey() + "."+ item.getValue()+ " purchased\n";
+            s += item.getKey() + ". "+ item.getValue()+ " purchased\n";
             totalCost += item.getKey().getPrice() * item.getValue();
         }
-        return s + "total cost: "+ totalCost;
+        return s + "total cost: "+ String.format("%.2f",totalCost);
     }
 }
