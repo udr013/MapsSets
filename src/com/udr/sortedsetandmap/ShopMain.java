@@ -65,28 +65,50 @@ public class ShopMain {
          * note: last two are faster as they don't need the compareTo method
          * */
         sellItem(myBasket,"vase",4);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
         sellItem(myBasket,"car",6);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
         sellItem(myBasket,"bike",3);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
         sellItem(myBasket,"towel",7);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
         sellItem(myBasket,"car",1);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
         sellItem(myBasket,"cup",25);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
         sellItem(myBasket,"cup",15);
-        System.out.println(myBasket);
+        //System.out.println(myBasket);
 
-        System.out.println();
+
+        Basket customer = new Basket("customer");
+        sellItem(customer,"cup",9);
+        sellItem(customer,"bread",9);
+        sellItem(customer,"juice",4);
+        sellItem(customer, "car",1);
+        removeItem(customer, "cup", 2);
+        System.out.println(customer);
+
+        removeItem(myBasket, "towel", 8);
+        removeItem(myBasket, "bike", 2);
+        System.out.println("removed towel from basket: "+ removeItem(myBasket,"car",2));
+        System.out.println("\ndisplay stocklist befor and after checkout");
+        System.out.println(myBasket);
+        System.out.println(stockList);
+        checkOut(myBasket);
         System.out.println(stockList);
 
 //        temp = new StockItem("pen",.98);
 //        stockList.getItemsList().put(temp.getName(),temp);
-        stockList.getItemsList().get("car").adjustStock(2000);
-        stockList.getItemsList().get("car").adjustStock(-1000);
-        stockList.get("car").adjustStock(-1000);
+        StockItem car = stockList.get("car");
+        if(car!=null){
+            car.adjustStock(2000);
+        }
+        if(car!=null){
+            car.adjustStock(-1000);
+        }
+//        stockList.getItemsList().get("car").adjustStock(2000);
+//        stockList.getItemsList().get("car").adjustStock(-1000);
+//        stockList.get("car").adjustStock(-1000);
         System.out.println(stockList);
         for(Map.Entry<String, Double> price : stockList.getPriceList().entrySet()){
             System.out.println(price.getKey() + " Cost: "+ price.getValue());
@@ -120,7 +142,7 @@ public class ShopMain {
         return 0;
     }
 
-    public void checkOut(Basket basket){
+    public static void checkOut(Basket basket){
         for(Map.Entry<StockItem,Integer> item: basket.items().entrySet()){
             stockList.sellStock(item.getKey().getName(),item.getValue());
         }
