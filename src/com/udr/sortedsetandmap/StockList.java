@@ -2,7 +2,6 @@ package com.udr.sortedsetandmap;
 
 
 import java.util.Collections; //interface
-import java.util.HashMap;
 import java.util.LinkedHashMap; //actual class
 import java.util.Map; //interface
 
@@ -39,26 +38,51 @@ public class StockList {
             //if(inStock!= null){
             if (inStock != item) {
                 //if there are already quantities of this stock adjust quantity
-                item.adjustStock(inStock.quantityInStock());
+                item.adjustStock(inStock.availableQuantity());
             }
             list.put(item.getName(), item);
-            return item.quantityInStock();
+            return item.availableQuantity();
         }
         return 0; // to indicate there is no stock movement
     }
 
-    public int sellStock(String item, int quantity) {
-        //key is item, defaultValue is null because we only want to know about the item if exists , not add one to list
-        StockItem inStock = list.getOrDefault(item, null);
-        if ((inStock != null) && (inStock.quantityInStock() >= quantity) && (quantity != 0)) {
-            inStock.adjustStock(-quantity);
-            return quantity;
-        }else{
-            System.out.println("only "+ inStock.quantityInStock()+" "+inStock.getName()+ " left.. adjust your order!");
-            return 0;
+    public int reservedStock(String item, int quantity){
+        StockItem inStock = list.get(item);
+
+        if ((inStock!=null)&&(quantity!=0)){
+            return inStock.reserveStock(quantity);
         }
-         //to indicate nothing happend
+        return  0;
     }
+
+    public int unreserveStock(String item, int quantity) {
+        StockItem inStock = list.get(item);
+
+        if ((inStock != null) && (quantity != 0)) {
+            return inStock.unreserveStock(quantity);
+        }
+        return 0;
+    }
+
+    public int sellStock(String item, int quantity) {
+        StockItem inStock = list.get(item);
+
+        if ((inStock != null) && (quantity != 0)) {
+            return inStock.finaliseStock(quantity);
+        }
+        return 0;
+    }
+//        //key is item, defaultValue is null because we only want to know about the item if exists , not add one to list
+//        StockItem inStock = list.getOrDefault(item, null);
+//        if ((inStock != null) && (inStock.availableQuantity() >= quantity) && (quantity != 0)) {
+//            inStock.adjustStock(-quantity);
+//            return quantity;
+//        }else{
+//            System.out.println("only "+ inStock.availableQuantity()+" "+inStock.getName()+ " left.. adjust your order!");
+//            return 0;
+//        }
+//         //to indicate nothing happend
+//    }
 
     public StockItem get(String key) {
         return list.get(key);
@@ -101,8 +125,8 @@ public class StockList {
         // look at Map.java
         for (Map.Entry<String, StockItem> item : list.entrySet()) {
             StockItem stockItem = item.getValue();
-            double itemValue = stockItem.getPrice() * stockItem.quantityInStock();
-            s += stockItem + ". There are " + stockItem.quantityInStock() + " in stock. Value of items: "
+            double itemValue = stockItem.getPrice() * stockItem.availableQuantity();
+            s += stockItem + ". There are " + stockItem.availableQuantity() + " in stock. Value of items: "
                     + String.format("%.2f",itemValue) + "\n";
             totalCost += itemValue;
         }

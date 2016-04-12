@@ -94,6 +94,19 @@ public class ShopMain {
 
     }
 
+    public static int removeItem(Basket basket,String item,int quantity){
+        //retreive item from stock
+        StockItem stockItem = stockList.get(item);
+        if(stockItem==null){
+            System.out.println("we don't sell those");
+            return 0; // we need to return an int, so...
+        }
+        if(basket.removeFromBasket(stockItem,quantity)==quantity){
+            return stockList.unreserveStock(item,quantity);
+        }
+        return 0;
+    }
+
     public static int sellItem(Basket basket,String item,int quantity){
         //retreive item from stock
         StockItem stockItem = stockList.get(item);
@@ -101,10 +114,16 @@ public class ShopMain {
             System.out.println("we don't sell those");
             return 0; // we need to return an int, so...
         }
-        if(stockList.sellStock(item,quantity)!=0){
-            basket.addToBasket(stockItem,quantity);
-            return quantity;
+        if(stockList.reservedStock(item,quantity)!=0){
+            return basket.addToBasket(stockItem,quantity);
         }
         return 0;
+    }
+
+    public void checkOut(Basket basket){
+        for(Map.Entry<StockItem,Integer> item: basket.items().entrySet()){
+            stockList.sellStock(item.getKey().getName(),item.getValue());
+        }
+        basket.clearBasket();
     }
 }
